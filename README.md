@@ -1,4 +1,4 @@
 AZPlay
 ======
 
-OpenAZBoxMOD Enigma2 AZPlay plugin 
+AZPlay enigma2 plugin for Open AZBox project
