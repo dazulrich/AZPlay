@@ -637,6 +637,7 @@ class HideScr(Screen):
          'prevBouquet': self.ZapDown,
          'power': self.exit2,
          'play': self.keyPlay,
+         'pause': self.keyPlay,
          'stop': self.exit1,
          'previous': self.keyPrev,
          'next': self.keyNext,
