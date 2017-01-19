@@ -37,7 +37,7 @@ config.AZPlay.lastDir = ConfigText(default='/')
 config.AZPlay.lastFile = ConfigText(default='None')
 config.AZPlay.lastPosition = ConfigText(default='0')
 config.AZPlay.ExtSub_Enable = ConfigSelection(choices={'0': _('ON'),
- '1': _('OFF')}, default='0')
+ '1': _('OFF')}, default='1')
 config.AZPlay.ExtSub_Size = ConfigSelection(default=50, choices=['30',
  '35',
  '40',
@@ -134,11 +134,15 @@ class AZPlayScreen(Screen):
         self.current_service = self.session.nav.getCurrentlyPlayingServiceReference()
         selectable_nims = []
         for nim in nimmanager.nim_slots:
-            if nim.config_mode == 'nothing':
+            try:
+                confmode = nim.config_mode
+            except:
+                confmode = nim.config_mode_dvbs # for oatv > 5.3
+            if confmode == 'nothing':
                 continue
-            if nim.config_mode == 'advanced' and len(nimmanager.getSatListForNim(nim.slot)) < 1:
+            if confmode == 'advanced' and len(nimmanager.getSatListForNim(nim.slot)) < 1:
                 continue
-            if nim.config_mode in ('loopthrough', 'satposdepends'):
+            if confmode in ('loopthrough', 'satposdepends'):
                 root_id = nimmanager.sec.getRoot(nim.slot_id, int(nim.config.connectedTo.value))
                 if nim.type == nimmanager.nim_slots[root_id].type:
                     continue
@@ -633,6 +637,7 @@ class HideScr(Screen):
          'prevBouquet': self.ZapDown,
          'power': self.exit2,
          'play': self.keyPlay,
+         'pause': self.keyPlay,
          'stop': self.exit1,
          'previous': self.keyPrev,
          'next': self.keyNext,
