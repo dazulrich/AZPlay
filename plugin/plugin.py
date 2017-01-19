@@ -37,7 +37,7 @@ config.AZPlay.lastDir = ConfigText(default='/')
 config.AZPlay.lastFile = ConfigText(default='None')
 config.AZPlay.lastPosition = ConfigText(default='0')
 config.AZPlay.ExtSub_Enable = ConfigSelection(choices={'0': _('ON'),
- '1': _('OFF')}, default='0')
+ '1': _('OFF')}, default='1')
 config.AZPlay.ExtSub_Size = ConfigSelection(default=50, choices=['30',
  '35',
  '40',
