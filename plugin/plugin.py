@@ -32,12 +32,14 @@ from Components.config import configfile, getConfigListEntry, ConfigEnableDisabl
 from os.path import isdir as os_path_isdir
 from Components.MenuList import MenuList
 from Components.VolumeControl import VolumeControl
+from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
+
 config.AZPlay = ConfigSubsection()
 config.AZPlay.lastDir = ConfigText(default='/')
 config.AZPlay.lastFile = ConfigText(default='None')
 config.AZPlay.lastPosition = ConfigText(default='0')
 config.AZPlay.ExtSub_Enable = ConfigSelection(choices={'0': _('ON'),
- '1': _('OFF')}, default='0')
+ '1': _('OFF')}, default='1')
 config.AZPlay.ExtSub_Size = ConfigSelection(default=50, choices=['30',
  '35',
  '40',
@@ -117,12 +119,57 @@ for fontchk in list:
 
 scriptliste = list
 config.AZPlay.ExtSub_FontSel = ConfigSelection(choices=scriptliste, default='nmsbd.ttf')
-AZPlay_SKIN1 = '\n\t<screen position="center,570" size="1220,60" title="" flags="wfNoBorder" backgroundColor="transparent" >\n\t\t<widget name="infoA" position="10,10" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="0" halign="center" valign="center" />\n\t\t<widget name="infoB" position="10,70" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />\n\t\t<widget name="infoC" position="10,130" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />\n\t\t<widget name="infoD" position="10,5" zPosition="2" size="700,15" font="Regular;15" foregroundColor="#aaaaaa" transparent="1" halign="center" valign="center" />\n\t</screen>'
-AZPlay_SKIN2 = '\n\t<screen position="center,390" size="760,200" title="" flags="wfNoBorder" zPosition="-1" >\n\t\t<widget name="pozadina" position="0,0" size="760,200" zPosition="1" />\n\t\t<widget name="media_progress" position="45,150" size="670,15" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AZPlay/img/progress_big3.png" backgroundColor="#333333" />\n\t\t<widget name="infoA" position="45,175" zPosition="2" size="150,15" font="Regular;14" foregroundColor="#ffffff" transparent="1" halign="left" valign="center" />\n\t\t<widget name="infoB" position="643,175" zPosition="2" size="72,15" font="Regular;14" foregroundColor="#ffffff" transparent="1" halign="right" valign="center" />\n\t\t<widget name="infoC" position="45,42" zPosition="2" size="670,30" font="Regular;26" foregroundColor="#ffffff" transparent="1" halign="left" valign="center" />\n\t\t<widget name="infoD" position="45,85" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="left" valign="center" />\n\t\t<widget name="infoE" position="380,85" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="right" valign="center" />\n\t\t<widget name="infoF" position="45,118" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="left" valign="center" />\n\t\t<widget name="infoG" position="380,118" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="right" valign="center" />\n\t</screen>'
-AZPlay_SKIN3 = '\n\t<screen position="center,510" size="1220,180" title="" flags="wfNoBorder" >\n\t\t<widget name="infoA" position="10,10" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="0" halign="center" valign="center" />\n\t\t<widget name="infoB" position="10,70" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />\n\t\t<widget name="infoC" position="10,130" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />\n\t\t<widget name="infoD" position="10,5" zPosition="2" size="700,15" font="Regular;15" foregroundColor="#aaaaaa" transparent="1" halign="center" valign="center" />\n\t</screen>'
+
+AZPlay_SKIN1 = """
+        <screen position="center,570" size="1220,60" title="" flags="wfNoBorder" backgroundColor="transparent" >
+            <widget name="infoA" position="10,10" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="0" halign="center" valign="center" />
+            <widget name="infoB" position="10,70" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />
+            <widget name="infoC" position="10,130" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />
+            <widget name="infoD" position="10,5" zPosition="2" size="700,15" font="Regular;15" foregroundColor="#aaaaaa" transparent="1" halign="center" valign="center" />
+        </screen>
+        """
+
+AZPlay_SKIN2 = """
+        <screen position="center,390" size="760,200" title="" flags="wfNoBorder" zPosition="-1" >
+            <widget name="pozadina" position="0,0" size="760,200" zPosition="1" />
+            <widget name="media_progress" position="45,150" size="670,15" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AZPlay/img/progress_big3.png" backgroundColor="#333333" />
+            <widget name="infoA" position="45,175" zPosition="2" size="150,15" font="Regular;14" foregroundColor="#ffffff" transparent="1" halign="left" valign="center" />
+            <widget name="infoB" position="643,175" zPosition="2" size="72,15" font="Regular;14" foregroundColor="#ffffff" transparent="1" halign="right" valign="center" />
+            <widget name="infoC" position="45,42" zPosition="2" size="670,30" font="Regular;26" foregroundColor="#ffffff" transparent="1" halign="left" valign="center" />
+            <widget name="infoD" position="45,85" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="left" valign="center" />
+            <widget name="infoE" position="380,85" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="right" valign="center" />
+            <widget name="infoF" position="45,118" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="left" valign="center" />
+            <widget name="infoG" position="380,118" zPosition="2" size="335,25" font="Regular;18" foregroundColor="#aaaaaa" transparent="1" halign="right" valign="center" />
+        </screen>
+        """
+
+AZPlay_SKIN3 = """
+        <screen position="center,510" size="1220,180" title="" flags="wfNoBorder" >
+            <widget name="infoA" position="10,10" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="0" halign="center" valign="center" />
+            <widget name="infoB" position="10,70" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />
+            <widget name="infoC" position="10,130" zPosition="2" size="1200,45" font="Regular;46" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />
+            <widget name="infoD" position="10,5" zPosition="2" size="700,15" font="Regular;15" foregroundColor="#aaaaaa" transparent="1" halign="center" valign="center" />
+        </screen>
+        """
 
 class AZPlayScreen(Screen):
-    skin = '\n\t\t<screen position="center,center" size="710,420" title="AZPlay">\n\t\t\t<ePixmap pixmap="skin_default/buttons/red.png" position="10,380" size="140,40" alphatest="on" />\n\t\t\t<ePixmap pixmap="skin_default/buttons/green.png" position="193,380" size="140,40" alphatest="on" />\n\t\t\t<ePixmap pixmap="skin_default/buttons/yellow.png" position="376,380" size="140,40" alphatest="on" />\n\t\t\t<ePixmap pixmap="skin_default/buttons/blue.png" position="559,380" size="140,40" alphatest="on" />\n\n\t\t\t<widget source="key_red" render="Label" position="10,380" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" foregroundColor="#ffffff" transparent="1"/>\n\t\t\t<widget source="key_green" render="Label" position="193,380" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" foregroundColor="#ffffff" transparent="1"/>\n\t\t\t<widget source="key_yellow" render="Label" position="376,380" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" foregroundColor="#ffffff" transparent="1"/>\n\t\t\t<widget source="key_blue" render="Label" position="559,380" zPosition="1" size="140,40" font="Regular;14" halign="center" valign="center" backgroundColor="#1f771f" foregroundColor="#ffffff" transparent="1"/>\n\n\t\t\t<widget name="text"\t\tposition="0,5"\tfont="Regular;20" size="710,24"\t halign="center" />\n\t\t\t<widget name="text1"\t\tposition="0,345"\tfont="Regular;16" size="710,24"\t halign="center" />\n\t\t\t<widget name="text2"\t\tposition="0,175"\tfont="Regular;24" size="710,60"\t halign="center" />\n\t\t\t<widget name="start_progress" position="45,150" size="620,15" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AZPlay/img/progress_big3.png" backgroundColor="#333333" />\n\t\t\t<widget name="list_left" position="5,35" size="700,295" scrollbarMode="showOnDemand" />\n\t\t</screen>\n\t\t'
+    skin = """
+        <screen position="center,center" size="710,420" title="AZPlay">
+            <ePixmap pixmap="skin_default/buttons/red.png" position="10,380" size="140,40" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/green.png" position="193,380" size="140,40" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/yellow.png" position="376,380" size="140,40" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/blue.png" position="559,380" size="140,40" alphatest="on" />
+            <widget source="key_red" render="Label" position="10,380" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#9f1313" transparent="1"/>
+            <widget source="key_green" render="Label" position="193,380" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#1f771f" transparent="1"/>
+            <widget source="key_yellow" render="Label" position="376,380" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#a08500" transparent="1"/>
+            <widget source="key_blue" render="Label" position="559,380" zPosition="1" size="140,40" font="Regular;14" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#18188b" transparent="1"/>
+            <widget name="text" position="0,5" font="Regular;20" size="710,24" halign="center" />
+            <widget name="text1" position="0,345" font="Regular;16" size="710,24" halign="center" />
+            <widget name="text2" position="0,175" font="Regular;24" size="710,60" halign="center" />
+            <widget name="start_progress" position="45,150" size="620,15" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/AZPlay/img/progress_big3.png" backgroundColor="#333333" />
+            <widget name="list_left" position="5,35" size="700,295" scrollbarMode="showOnDemand" />
+        </screen>
+        """
 
     def __init__(self, session):
         if os_path_isdir(config.AZPlay.lastDir.value):
@@ -130,15 +177,23 @@ class AZPlayScreen(Screen):
         else:
             path_left = '/'
         Screen.__init__(self, session)
+        Screen.setTitle(self, _("AZPlayScreen"))
+        self['title1'] = Label(_("AZPlay - Starting up"))
+        self['title2'] = Label(_("AZPlay - Load Movie"))
         self.Console = Console()
         self.current_service = self.session.nav.getCurrentlyPlayingServiceReference()
+        self.session.nav.stopService()
         selectable_nims = []
         for nim in nimmanager.nim_slots:
-            if nim.config_mode == 'nothing':
+            try:
+                confmode = nim.config_mode
+            except:
+                confmode = nim.config_mode_dvbs #for oatv > 5.3
+            if confmode == 'nothing':
                 continue
-            if nim.config_mode == 'advanced' and len(nimmanager.getSatListForNim(nim.slot)) < 1:
+            if confmode == 'advanced' and len(nimmanager.getSatListForNim(nim.slot)) < 1:
                 continue
-            if nim.config_mode in ('loopthrough', 'satposdepends'):
+            if confmode in ('loopthrough', 'satposdepends'):
                 root_id = nimmanager.sec.getRoot(nim.slot_id, int(nim.config.connectedTo.value))
                 if nim.type == nimmanager.nim_slots[root_id].type:
                     continue
@@ -191,7 +246,7 @@ class AZPlayScreen(Screen):
         self['key_red'] = StaticText(_('Exit'))
         self['key_green'] = StaticText(_('Start'))
         self['key_yellow'] = StaticText(_('Menu'))
-        self['key_blue'] = StaticText(_('GoTo MediaFolder'))
+        self['key_blue'] = StaticText(_('Goto Media folder'))
         self['text'] = Label(_('Select Device :'))
         self['text1'] = Label(_('To SetUp AZPlay - Press the Menu button'))
         self['text2'] = Label(_('Loading...\nPlease Wait'))
@@ -239,6 +294,8 @@ class AZPlayScreen(Screen):
         self.pf_all = 'ts|vob|mpg|mpeg|avi|mkv|dat|iso|img|mp4|divx|m2ts|wmv|flv|mov|mts' + '|' + 'mp3|ogg|wav|wave|flac|m4a|m3u|pls|e2pls|ac3' + '|' + 'jpeg|jpg|jpe|png|bmp|gif'
         self['list_left'] = FileList(path_left, matchingPattern='(?i)^.*\\.(' + self.pf_all + ')', useServiceRef=True, additionalExtensions='4098:ac3 4098:m3u 4098:e2pls 4098:pls')
         self.SOURCELIST = self['list_left']
+        self['title1'].show()
+        self['title2'].hide()
         self['list_left'].hide()
         self['text'].hide()
         self['text1'].hide()
@@ -269,7 +326,7 @@ class AZPlayScreen(Screen):
             tmpfile.close()
         except IOError:
             print 'Error updateMsg'
-
+        self.session.nav.stopService()
         if int(line[:-1]) == 1:
             print 'StopService - DONE ! (', self.TestCounter, ')'
             self['start_progress'].setValue(100)
@@ -287,6 +344,8 @@ class AZPlayScreen(Screen):
         self['text'].setText('/media/')
 
     def Prepare1(self):
+        self['title2'].show()
+        self['title1'].hide()
         self['list_left'].show()
         self['text'].show()
         self['text1'].show()
@@ -607,7 +666,10 @@ class AZPlayScreen(Screen):
 
 
 class HideScr(Screen):
-    skin = '\n\t\t<screen position="0,0" size="0,0" title="AZPlay" flags="wfNoBorder" >\n\t\t</screen>'
+    skin = """
+        <screen position="0,0" size="0,0" title="AZPlay" flags="wfNoBorder" >
+        </screen>
+        """
 
     def __init__(self, session, ime, pateka, ftype):
         Screen.__init__(self, session)
@@ -633,6 +695,7 @@ class HideScr(Screen):
          'prevBouquet': self.ZapDown,
          'power': self.exit2,
          'play': self.keyPlay,
+         'pause': self.keyPlay,
          'stop': self.exit1,
          'previous': self.keyPrev,
          'next': self.keyNext,
@@ -1213,6 +1276,8 @@ class AZInfoBar(Screen):
     def __init__(self, session, mod, info1, info2, info3, info4, info5, vremetr, vreme1, vreme2, ftype):
         Screen.__init__(self, session)
         self.session = session
+        Screen.setTitle(self, _("AZInfoBar"))
+        self.title = _("AZPlay - InfoBar")
         if mod == 1:
             self.skin = AZPlay_SKIN2
         if mod == 2:
@@ -1494,10 +1559,21 @@ class AZInfoBar(Screen):
 
 
 class LoadSub(Screen):
-    skin = '\n\t\t<screen position="center,center" size="710,390" title="AZPlay - Load Subtitle">\n\t\t\t<ePixmap pixmap="skin_default/buttons/red.png" position="10,350" size="140,40" alphatest="on" />\n\t\t\t<ePixmap pixmap="skin_default/buttons/green.png" position="560,350" size="140,40" alphatest="on" />\n\n\t\t\t<widget source="key_red" render="Label" position="10,350" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" foregroundColor="#ffffff" transparent="1"/>\n\t\t\t<widget source="key_green" render="Label" position="560,350" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" foregroundColor="#ffffff" transparent="1"/>\n\n\t\t\t<widget name="text"\t\tposition="0,5"\tfont="Regular;20" size="710,24"\t halign="center" />\n\t\t\t<widget name="list_left" position="5,45" size="700,295" scrollbarMode="showOnDemand" />\n\t\t</screen>\n\t\t'
+    skin = """
+        <screen position="center,center" size="710,390" title="AZPlay - Load Subtitle">
+            <ePixmap pixmap="skin_default/buttons/red.png" position="10,350" size="140,40" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/green.png" position="560,350" size="140,40" alphatest="on" />
+            <widget source="key_red" render="Label" position="10,350" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" foregroundColor="#ffffff" transparent="1"/>
+            <widget source="key_green" render="Label" position="560,350" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" foregroundColor="#ffffff" transparent="1"/>
+            <widget name="text" position="0,5" font="Regular;20" size="710,24" halign="center" />
+            <widget name="list_left" position="5,45" size="700,295" scrollbarMode="showOnDemand" />
+        </screen>
+        """
 
     def __init__(self, session, pateka):
         Screen.__init__(self, session)
+        Screen.setTitle(self, _("LoadSub"))
+        self.title = _("AZPlay - Load Subtitle")
         self.session = session
         self.Pateka = pateka
         self['actions'] = ActionMap(['OkCancelActions', 'ShortcutActions', 'ColorActions'], {'red': self.quit,
@@ -1539,10 +1615,21 @@ class LoadSub(Screen):
 
 
 class AZPlayConfig(ConfigListScreen, Screen):
-    skin = '\n\t\t<screen position="center,center" size="710,275" title="AZPlay - Setup" >\n\t\t<ePixmap pixmap="skin_default/buttons/red.png" position="10,230" size="140,40" transparent="1" alphatest="on" />\n\t\t<ePixmap pixmap="skin_default/buttons/green.png" position="560,230" size="140,40" transparent="1" alphatest="on" />\n\t\t<widget source="key_red" render="Label" position="10,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget source="key_green" render="Label" position="560,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget source="poraka" render="Label" position="150,230" zPosition="1" size="400,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget name="config" position="10,10" size="690,210" scrollbarMode="showOnDemand" />\n\t\t</screen>'
+    skin = """
+        <screen position="center,center" size="710,275" title="AZPlay - Config" >
+            <ePixmap pixmap="skin_default/buttons/red.png" position="10,230" size="140,40" transparent="1" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/green.png" position="560,230" size="140,40" transparent="1" alphatest="on" />
+            <widget source="key_red" render="Label" position="10,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget source="key_green" render="Label" position="560,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget source="poraka" render="Label" position="150,230" zPosition="1" size="400,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget name="config" position="10,10" size="690,210" scrollbarMode="showOnDemand" />
+        </screen>
+        """
 
     def __init__(self, session, args = None):
         Screen.__init__(self, session)
+        Screen.setTitle(self, _("AZPlayConfig"))
+        self.title = _("AZPlay - Config")
         self.session = session
         self.ActivePlay = args
         self.list = []
@@ -1557,7 +1644,7 @@ class AZPlayConfig(ConfigListScreen, Screen):
          'green': self.SaveCfg,
          'red': self.Izlaz}, -2)
         self['key_red'] = StaticText(_('Exit'))
-        self['key_green'] = StaticText(_('Save Conf'))
+        self['key_green'] = StaticText(_('Save'))
         self['poraka'] = StaticText(_('AZPlay - Setup'))
         ConfigListScreen.__init__(self, self.list)
         self.ExtSub_Size_old = config.AZPlay.ExtSub_Size.value
@@ -1696,10 +1783,21 @@ class AZPlayConfig(ConfigListScreen, Screen):
 
 
 class AZPlaySelectLang(ConfigListScreen, Screen):
-    skin = '\n\t\t<screen position="center,center" size="710,275" title="AZPlay - Language Select" >\n\t\t<ePixmap pixmap="skin_default/buttons/red.png" position="10,230" size="140,40" transparent="1" alphatest="on" />\n\t\t<ePixmap pixmap="skin_default/buttons/green.png" position="560,230" size="140,40" transparent="1" alphatest="on" />\n\t\t<widget source="key_red" render="Label" position="10,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget source="key_green" render="Label" position="560,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget source="poraka" render="Label" position="150,230" zPosition="1" size="400,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget name="list" position="10,10" size="690,210" scrollbarMode="showOnDemand" />\n\t\t</screen>'
+    skin = """
+        <screen position="center,center" size="710,275" title="AZPlay - Language Select" >
+            <ePixmap pixmap="skin_default/buttons/red.png" position="10,230" size="140,40" transparent="1" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/green.png" position="560,230" size="140,40" transparent="1" alphatest="on" />
+            <widget source="key_red" render="Label" position="10,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget source="key_green" render="Label" position="560,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget source="poraka" render="Label" position="150,230" zPosition="1" size="400,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget name="list" position="10,10" size="690,210" scrollbarMode="showOnDemand" />
+        </screen>
+        """
 
     def __init__(self, session, ALanguages):
         Screen.__init__(self, session)
+        Screen.setTitle(self, _("AZPlaySelectLang"))
+        self.title = _("AZPlay - Language Select")
         self.session = session
         self.ALanguages = ALanguages
         self.list = []
@@ -1755,10 +1853,21 @@ class AZPlaySelectLang(ConfigListScreen, Screen):
 
 
 class AZPlaySelectSub(ConfigListScreen, Screen):
-    skin = '\n\t\t<screen position="center,center" size="710,275" title="AZPlay - Subtitle Select" >\n\t\t<ePixmap pixmap="skin_default/buttons/red.png" position="10,230" size="140,40" transparent="1" alphatest="on" />\n\t\t<ePixmap pixmap="skin_default/buttons/green.png" position="560,230" size="140,40" transparent="1" alphatest="on" />\n\t\t<widget source="key_red" render="Label" position="10,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget source="key_green" render="Label" position="560,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget source="poraka" render="Label" position="150,230" zPosition="1" size="400,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />\n\t\t<widget name="list" position="10,10" size="690,210" scrollbarMode="showOnDemand" />\n\t\t</screen>'
+    skin = """
+        <screen position="center,center" size="710,275" title="AZPlay - Subtitle Select" >
+            <ePixmap pixmap="skin_default/buttons/red.png" position="10,230" size="140,40" transparent="1" alphatest="on" />
+            <ePixmap pixmap="skin_default/buttons/green.png" position="560,230" size="140,40" transparent="1" alphatest="on" />
+            <widget source="key_red" render="Label" position="10,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget source="key_green" render="Label" position="560,230" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget source="poraka" render="Label" position="150,230" zPosition="1" size="400,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+            <widget name="list" position="10,10" size="690,210" scrollbarMode="showOnDemand" />
+        </screen>
+        """
 
     def __init__(self, session, SubtitlesL):
         Screen.__init__(self, session)
+        Screen.setTitle(self, _("AZPlaySelectSub"))
+        self.title = _("AZPlay - Subtitle Select")
         self.session = session
         self.SubtitlesL = SubtitlesL
         self.list = []
@@ -1836,6 +1945,4 @@ def Plugins(path, **kwargs):
     else:
         plugin_list = []
     return plugin_list
-
-
-global cache
+   
