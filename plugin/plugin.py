@@ -1582,8 +1582,9 @@ class LoadSub(Screen):
          'ok': self.keyGo,
          'cancel': self.quit}, -2)
         self['key_red'] = StaticText(_('Cancel'))
-        self['key_green'] = StaticText(_('Start'))
+        self['key_green'] = StaticText(_('Select'))
         self['text'] = Label(_('Select Device :'))
+        self['poraka'] = StaticText(_('AZPlay - Select Subtitle file or cancel'))
         path_left = self.Pateka
         self['list_left'] = FileList(path_left, matchingPattern='(?i)^.*\\.(sub|srt)')
         self.SOURCELIST = self['list_left']
@@ -1945,4 +1946,3 @@ def Plugins(path, **kwargs):
     else:
         plugin_list = []
     return plugin_list
-   
